@@ -39,7 +39,7 @@ const manyVampires = require('./models/manyVampires')
 // --- CREATE -------------------------------------------------------------------------------------------------------
 
 // Vampire.create(manyVampires)
-//   // now we handle what happens if our db transaction suceeds 
+//   // now we handle what happens if our db transaction succeeds 
 //   .then((vampire) => {
 //         console.log('vampire created \n', vampire)
 //   })
@@ -164,33 +164,11 @@ const manyVampires = require('./models/manyVampires')
 //         db.close()
 //     })
 
-// --- QUERYING (COMPARISON) --------------------------------------------------------------------------------------
-
-// ///  find gender of female
-
-// Vampire.find({ gender: 'f' })
-
-// // have greater than 500 victims
-
-// Vampire.find({ $gte: 500 })
-
-// // fewer than or equal to 150 victims
-
-// Vampire.find({ $lte: 150 })
-
-// // victim count not equal to 210234
-
-// Vampire.find({ $ne: 210234 })
-
-// // greater than 150 and fewer than 500 
-
-// Vampire.find({ $gte: 150, $lte: 500 })
-
-// // finds all 
+// --- FIND ------------------------------------------------------------------------------------------------------
 
 // Vampire.find({})
 // 	.then((vampire) => {
-// 		console.log(tweets)
+// 		console.log(vampire)
 // 	})
 // 	.catch((error) => {
 // 		console.log(error)
@@ -198,4 +176,407 @@ const manyVampires = require('./models/manyVampires')
 // 	.finally(() => {
 // 		db.close()
 // 	})
+
+// --- QUERYING (COMPARISON) -------------------------------------------------------------------------------------
+
+// <-------- find gender of female ------------------------------------------------------------------------------>
+
+// Vampire.find({ gender: 'f' })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- have greater than 500 victims ---------------------------------------------------------------------->
+
+// Vampire.find({ victims: { $gt: 500 } } )
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- fewer than or equal to 150 victims ----------------------------------------------------------------->
+
+// Vampire.find({ victims: { $lte: 150 } } )
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+//  <-------- victim count not equal to 210234 ------------------------------------------------------------------>
+
+// Vampire.find({ victims: { $ne: 210234} } )
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- victims greater than 150 and fewer than 500 -------------------------------------------------------->
+
+// Vampire.find({ victims: { $gt: 150, $lt: 500 } })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// --- QUERYING (EXISTS OR NOT) ----------------------------------------------------------------------------------
+
+// <-------- key of title --------------------------------------------------------------------------------------->
+
+// Vampire.find({ title: { $exists: true} })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- do not have a key of victims ----------------------------------------------------------------------->
+
+// Vampire.find({ victims: { $exists: false} })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- have a title and no victims ------------------------------------------------------------------------>
+
+// Vampire.find({ title: { $exists: true}, victims: 0 })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// <-------- have victims and they have are greater than 100 ---------------------------------------------------->
+
+// Vampire.find({ victims: { $exists: true, $gte: 500 } })
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// -- QUERYING (OR) ----------------------------------------------------------------------------------------------
+
+// <-------- from new york, new york, us or new orleans, louisana, us ------------------------------------------->
+
+// Vampire.find( { $or: [ { location: 'New York, New York, US' }, { location: 'New Orleans, Louisana, US' } ] } )
+//     .then((vampire) => {
+//         console.log(vampire)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+//     .finally(() => {
+//         db.close()
+//     })
+
+// // <-------- love brooding or being tragic ------------------------------------------------------------------->
+
+// Vampire.find( { $or: [ { loves: "brooding" }, { loves: "being tragic" } ] } )
+//         .then((vampire) => {
+//             console.log(vampire)
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         })
+//         .finally(() => {
+//             db.close()
+//         })
+
+// // <-------- more than 1000 victims or love marshmellows ---------------------------------------------------->
+
+// Vampire.find( { $or: [ { victims: { $gt: 1000 } }, { loves: "marshmellows" } ] } )
+//     .then((vampire) => {
+//         console.log(vampire)
+//         })
+//         .catch((error) => {
+//              console.log(error)
+//         })
+//         .finally(() => {
+//             db.close()
+//         })
+
+// // <-------- red hair or green eyes -------------------------------------------------------------------------->
+
+// Vampire.find( { $or: [ { hair_color: "red" }, { eye_color: "green" } ] } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// -- QUERYING (ONE OR MORE) -------------------------------------------------------------------------------------
+
+// <-------- love either frilly shirtsleeves or frilly collars -------------------------------------------------->
+
+// Vampire.find( { $or: [ { loves: "frilly shirtsleeves" }, { loves: "frilly collars" } ] } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+//  <-------- love brooding ------------------------------------------------------------------------------------->
+
+// Vampire.find( { loves: "brooding" } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- love at least one of the following: appearing innocent, trickery, lurking in rotting mansions, R&B music ------------>
+
+// Vampire.find( { $or: [ { loves: "appearing innocent"}, {loves: "trickery"}, {loves: "lurking in rotting mansions"}, {loves: "R&B music"} ] } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- love fancy cloaks but not if they also love -------------------------------------------------------->
+// <-------- either top hats or virgin blood * Hint-You will also have to use $nin * ---------------------------->
+
+// Vampire.find( { $and: [ { loves: "fancy cloaks" }, { loves: {$nin: ['top hats', 'virgin blood'] } } ] } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// -- QUERYING (NEGATIVE) --------------------------------------------------------------------------------------->
+
+// <-------- love ribbons but do not have brown eyes ------------------------------------------------------------>
+
+// Vampire.find( { $and: [ { loves: "ribbons" }, { eye_color: { $nin: "brown" } } ] } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- are not from rome ---------------------------------------------------------------------------------->
+
+// Vampire.find( { location: { $nin: "Rome, Italy" } } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- do not love any of the following: ------------------------------------------------------------------>
+// <-------- [fancy cloaks, frilly shirtsleeves, appearing innocent, being tragic, brooding] -------------------->
+
+// Vampire.find( { loves: { $nin: [ "fancy cloaks", "frilly shirtsleeves", "appearing innocent", "being tragic", "brooding" ] } } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- have not killed more than 200 people --------------------------------------------------------------->
+
+// Vampire.find( { victims: { $nin: { $gte: 200 } } } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// REPLACE ------------------------------------------------------------------------------------------------------>
+
+// <-------- replace 'Claudia' w/ vampire named 'Eve' ----------------------------------------------------------->
+// <-------- needs key portrayed_by with the value 'Tilda Swinton ----------------------------------------------->
+
+// Vampire.findOneAndReplace( { name: "Claudia" }, { name: "Eve", portrayed_by: "Tilda Swinton" } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- replace first male vampire with another whose name is 'Guy Man' ------------------------------------>
+// <-------- needs a key 'is_actually' with the value 'were-lizard' --------------------------------------------->
+
+// Vampire.findOneAndReplace( { gender: "m" }, { name: "Guy Man", is_actually: "were-lizard" } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// UPDATE ------------------------------------------------------------------------------------------------------->
+
+// <-------- update 'Guy Man' to have a gender of 'f' ----------------------------------------------------------->
+
+// Vampire.findOneAndUpdate( {  name: "Guy Man" }, { gender: "f"}, { new: true } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- update 'Eve' to have a gender of 'm' ----------------------------------------------------------->
+
+// Vampire.findOneAndUpdate( {  name: "Eve" }, { gender: "m"}, { new: true } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- update 'Guy Man' to have an array called 'hates' that includes 'clothes' and 'jobs' ---------------->
+
+// Vampire.findOneAndUpdate( {  name: "Guy Man" }, { hates: [ "clothes", "jobs" ]}, { new: true } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- update 'Guy Man's' hates array also to include 'alarm clocks' and 'jackalopes' --------------------->
+
+// Vampire.findOneAndUpdate( {  name: "Guy Man" }, { $push: { hates: { $each: [ "clothes", "jobs" ] } } }, { new: true } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- rename 'Eve's' name field to 'moniker' ------------------------------------------------------------->
+
+// Vampire.findOneAndUpdate( {  name: "Eve" }, { $rename: { name: "monkier" } }, { new: true } )
+// 	.then((vampire) => {
+// 		console.log(vampire)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error)
+// 		})
+// 		.finally(() => {
+// 			db.close()
+// 		})
+
+// <-------- We now no longer want to categorize female gender as "f", but rather as fems. ---------------------->
+// <-------- Update all females so that the they are of gender "fems". ------------------------------------------>
+
+Vampire.UpdateMany( { gender: "f" }, { gender: "fems" }, { new: true } )
+	.then((vampire) => {
+		console.log(vampire)
+		})
+		.catch((error) => {
+			console.log(error)
+		})
+		.finally(() => {
+			db.close()
+		})
+
+
+
+
+
+
+
 
